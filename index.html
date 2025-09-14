@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>directml</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; frame-src 'self' blob:; connect-src 'self';" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">directml</div>
+    <div class="controls">
+      <input id="slug" class="slug" type="text" placeholder="untitled" autocomplete="off" />
+      <button id="saveBtn" title="cmd/ctrl+s to save">save</button>
+      <button id="loadBtn">load</button>
+      <button id="shareBtn">share link</button>
+      <span id="status" class="status" aria-live="polite"></span>
+    </div>
+  </header>
+
+  <main id="split">
+    <section class="left">
+      <textarea id="editor" spellcheck="false"></textarea>
+      <div id="dragbar" title="drag to resize"></div>
+    </section>
+    <section class="right">
+      <iframe id="preview" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
+    </section>
+  </main>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
