@@ -13,14 +13,13 @@
   const initialSlug = qs.get('s') || '';
   if (initialSlug) slugInput.value = initialSlug;
 
-  // default template
   const starter = `<!doctype html>
 <html>
 <head>
   <meta charset="utf-8">
   <title>directml</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>body{font:16px system-ui, -apple-system, Segoe UI, Roboto, sans-serif;padding:24px;line-height:1.5}</style>
+  <style>body{font:16px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:24px;line-height:1.5}</style>
 </head>
 <body>
   <h1>hello, directml</h1>
@@ -28,11 +27,9 @@
 </body>
 </html>`;
 
-  // load from localStorage or set starter
   editor.value = localStorage.getItem('directml_current') || starter;
   render();
 
-  // debounced render
   let t;
   editor.addEventListener('input', () => {
     localStorage.setItem('directml_current', editor.value);
@@ -40,11 +37,9 @@
     t = setTimeout(render, 120);
   });
 
+  // use srcdoc instead of blob URLs
   function render() {
-    const blob = new Blob([editor.value], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    iframe.src = url;
-    iframe.onload = () => URL.revokeObjectURL(url);
+    iframe.srcdoc = editor.value;
   }
 
   // resizer
@@ -94,10 +89,8 @@
   async function doSave() {
     const slug = slugInput.value.trim();
     if (!slug) return flash('enter a slug');
-    // save locally always
     localStorage.setItem(`directml:${slug}`, editor.value);
     flash('saved locally');
-    // try cloud save if functions exist
     try {
       const res = await fetch('/api/save', {
         method: 'POST',
@@ -105,13 +98,12 @@
         body: JSON.stringify({ slug, content: editor.value })
       });
       if (res.ok) flash('saved to cloud');
-    } catch (_) { /* offline or no functions */ }
+    } catch (_) {}
   }
 
   async function doLoad() {
     const slug = slugInput.value.trim();
     if (!slug) return flash('enter a slug');
-    // try cloud first
     try {
       const res = await fetch(`/api/load?slug=${encodeURIComponent(slug)}`);
       if (res.ok) {
@@ -124,8 +116,7 @@
           return;
         }
       }
-    } catch (_) { /* fall back to local */ }
-    // local fallback
+    } catch (_) {}
     const local = localStorage.getItem(`directml:${slug}`);
     if (local) {
       editor.value = local;
@@ -137,6 +128,5 @@
     }
   }
 
-  // auto-load if ?s= present and there is cloud/local content
   if (initialSlug) doLoad();
 })();
