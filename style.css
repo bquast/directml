@@ -98,7 +98,7 @@ button:hover { border-color: #2d3551; }
   width: 100%;
   height: 100%;
   border: none;
-  background: #0b0d14;
+  background: white;
 }
 
 /* desktop focus; but keep it usable on smaller screens */
@@ -107,8 +107,4 @@ button:hover { border-color: #2d3551; }
   #editor { border-right: none; }
   #dragbar { display: none; }
   .right { height: 50vh; }
-}
-
-.preview iframe {
-  background: white;
 }
