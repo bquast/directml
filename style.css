@@ -108,3 +108,7 @@ button:hover { border-color: #2d3551; }
   #dragbar { display: none; }
   .right { height: 50vh; }
 }
+
+.preview iframe {
+  background: white;
+}
